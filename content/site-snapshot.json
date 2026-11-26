@@ -1,0 +1,286 @@
+{
+  "generatedAt": "2026-11-26T08:19:34.366Z",
+  "version": 1,
+  "settings": {
+    "bio": "Saya adalah mahasiswa Sistem Informasi yang percaya bahwa teknologi terbaik lahir dari pemahaman terhadap manusia. Fokus saya adalah membangun produk digital yang terstruktur, aksesibel, dan punya detail yang terasa. Selain menulis kode, saya aktif menuangkan gagasan lewat artikel, jurnal, dan karya tulis.",
+    "logo": "",
+    "mode": "dark",
+    "name": "Geminiraka",
+    "role": "Information Systems Student",
+    "tone": "default",
+    "email": "hello@daffa.dev",
+    "focus": [
+      "Web Development",
+      "UI Engineering",
+      "Sistem Informasi",
+      "Data Visualization"
+    ],
+    "phone": "+62 812 3456 7890",
+    "photo": "",
+    "stats": [
+      {
+        "label": "Proyek Selesai",
+        "value": "12+"
+      },
+      {
+        "label": "Karya Tulis",
+        "value": "08"
+      },
+      {
+        "label": "Sertifikasi",
+        "value": "06"
+      },
+      {
+        "label": "Tahun Belajar",
+        "value": "03"
+      }
+    ],
+    "accent": "#c8ff5e",
+    "accent2": "#5ce1c3",
+    "socials": [
+      {
+        "url": "https://github.com/",
+        "label": "GitHub"
+      },
+      {
+        "url": "https://linkedin.com/",
+        "label": "LinkedIn"
+      },
+      {
+        "url": "https://instagram.com/",
+        "label": "Instagram"
+      }
+    ],
+    "tagline": "Saya bergerak di persimpangan desain, data, dan pengembangan web — merancang sistem informasi yang tidak hanya berjalan, tetapi juga nyaman digunakan.",
+    "fontBody": "space-grotesk",
+    "fontMono": "jetbrains-mono",
+    "fullName": "Daffa Pratama",
+    "headline": "Membangun sistem digital yang rapi, cepat, dan terasa manusiawi.",
+    "location": "Jakarta, Indonesia",
+    "showGrid": true,
+    "siteName": "DAFFA.SYS",
+    "heroLabel": "Personal Information System",
+    "footerNote": "Dirancang & dikembangkan dengan presisi.",
+    "university": "S1 Sistem Informasi",
+    "contactText": "Saya terbuka untuk kolaborasi proyek, magang, riset, atau sekadar berdiskusi tentang sistem informasi dan desain antarmuka.",
+    "fontDisplay": "instrument-serif",
+    "availability": "Terbuka untuk kolaborasi",
+    "contactHeadline": "Punya ide atau peluang? Mari bicarakan."
+  },
+  "works": [
+    {
+      "id": "7c64ed31-c86a-44b2-878e-0a0849737db4",
+      "link": "",
+      "tags": [
+        "UI/UX",
+        "Usability",
+        "Design Thinking"
+      ],
+      "type": "Artikel",
+      "year": "2025",
+      "cover": "",
+      "title": "Mengapa Antarmuka yang Baik adalah Bagian dari Sistem Informasi",
+      "content": "## Antarmuka adalah titik temu\n\nDalam sistem informasi, antarmuka adalah satu-satunya bagian yang benar-benar dirasakan pengguna. Basis data yang rapi dan logika yang benar tidak akan terlihat jika pengguna tidak mampu menyelesaikan tugasnya.\n\n## Tiga lapisan kegunaan\n\n- **Efektivitas** — pengguna bisa menyelesaikan tujuan.\n- **Efisiensi** — pengguna tidak membuang waktu berlebihan.\n- **Kepuasan** — pengguna merasa percaya dan nyaman.\n\nKetiganya saling terkait. Tombol yang terlalu kecil, istilah teknis yang tidak konsisten, atau alur yang berputar-putar dapat menghancurkan kepercayaan terhadap keseluruhan sistem.\n\n## Kesimpulan\n\nDesain antarmuka bukan sentuhan terakhir. Ia adalah bagian dari arsitektur informasi itu sendiri.",
+      "excerpt": "Sistem yang akurat belum tentu berguna jika sulit dipahami. Tulisan ini membahas hubungan antara kegunaan, kepercayaan, dan kualitas antarmuka.",
+      "category": "UI/UX",
+      "featured": false,
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z"
+    },
+    {
+      "id": "13615c29-2f0a-4933-b99d-e68b8d94c069",
+      "link": "",
+      "tags": [
+        "HCI",
+        "Heuristic Evaluation",
+        "Dashboard"
+      ],
+      "type": "Karya Tulis",
+      "year": "2024",
+      "cover": "",
+      "title": "Optimasi Pengalaman Pengguna pada Dashboard Akademik",
+      "content": "## Ringkasan\n\nDashboard akademik sering menampilkan terlalu banyak informasi sekaligus. Evaluasi ini menggunakan sepuluh heuristik Nielsen untuk menemukan titik gesek utama pada sebuah portal akademik kampus.\n\n## Temuan utama\n\n1. Hierarki visual lemah — semua informasi memiliki bobot yang hampir sama.\n2. Tidak ada status sistem yang jelas saat data sedang dimuat.\n3. Navigasi istilah tidak konsisten antara halaman.\n4. Informasi penting seperti jadwal terdekat tenggelam di antara menu sekunder.\n\n## Rekomendasi\n\nRedesain diarahkan pada **progressive disclosure** dan pengelompokan berbasis tugas. Kartu ringkasan ditempatkan di area pertama, sementara fitur administratif dipindahkan ke tingkat kedua.",
+      "excerpt": "Evaluasi heuristik dan redesain dashboard akademik untuk mengurangi beban kognitif mahasiswa saat mengakses informasi perkuliahan.",
+      "category": "Human Computer Interaction",
+      "featured": false,
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z"
+    },
+    {
+      "id": "52a5bdb7-f6b2-4ca9-8f33-66c355c01bab",
+      "link": "",
+      "tags": [
+        "Design System",
+        "CSS",
+        "React"
+      ],
+      "type": "Artikel",
+      "year": "2024",
+      "cover": "",
+      "title": "Membangun Design System Kecil yang Bertahan Lama",
+      "content": "## Mulai dari yang sering dipakai\n\nDesign system yang terlalu ambisius sering berhenti di tengah jalan. Mulailah dari komponen yang benar-benar dipakai berulang: tombol, input, kartu, dan tipografi.\n\n## Token sebelum komponen\n\nGunakan variabel warna, spacing, radius, dan shadow sejak awal. Token membuat perubahan tema menjadi mudah dan menjaga konsistensi antar halaman.\n\n## Dokumentasi ringan\n\nSatu halaman berisi contoh komponen, aturan penggunaan, dan hal yang harus dihindari sudah cukup untuk memulai. Perawatan lebih penting daripada kelengkapan.",
+      "excerpt": "Design system tidak harus besar. Yang penting adalah konsistensi, dokumentasi, dan kesediaan untuk terus merawatnya.",
+      "category": "Front-End",
+      "featured": false,
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z"
+    },
+    {
+      "id": "4308828b-9f3e-4830-895d-99d52c8e98e9",
+      "link": "",
+      "tags": [
+        "Laravel",
+        "MySQL",
+        "System Design"
+      ],
+      "type": "Jurnal",
+      "year": "2025",
+      "cover": "",
+      "title": "Perancangan Sistem Informasi Arsip Digital Berbasis Web",
+      "content": "## Latar Belakang\n\nPengelolaan arsip manual masih menjadi masalah umum pada organisasi kecil. Dokumen mudah tercecer, proses pencarian memakan waktu, dan tidak ada jejak versi yang jelas. Penelitian ini merancang sistem arsip digital berbasis web sebagai jawaban atas masalah tersebut.\n\n## Metodologi\n\nPerancangan menggunakan pendekatan **waterfall yang disederhanakan**:\n\n1. Observasi proses bisnis dan wawancara pengguna.\n2. Pemodelan kebutuhan dengan use case dan ERD.\n3. Perancangan antarmuka berbasis prinsip *recognition over recall*.\n4. Implementasi dan pengujian kegunaan dengan lima responden.\n\n## Hasil\n\nSistem berhasil memangkas waktu pencarian dokumen dari rata-rata **4 menit menjadi 18 detik**. Seluruh responden menilai navigation dan struktur kategori mudah dipahami.\n\n> Sistem informasi yang baik bukan sekadar memindahkan formulir kertas ke layar, tetapi menyusun ulang alur kerja agar lebih masuk akal.\n\n## Kesimpulan\n\nArsip digital yang dirancang dengan pemahaman proses bisnis memberikan dampak yang jauh lebih besar dibanding sekadar digitalisasi.",
+      "excerpt": "Studi perancangan arsip digital untuk organisasi kecil dengan pendekatan terstruktur: dari pemetaan proses bisnis hingga evaluasi kegunaan.",
+      "category": "Sistem Informasi",
+      "featured": true,
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z"
+    }
+  ],
+  "apps": [
+    {
+      "id": "e4f91bf5-bc09-4a6e-bd8c-54d5c2c33fd9",
+      "link": "",
+      "repo": "",
+      "tech": [
+        "React",
+        "Express",
+        "MySQL"
+      ],
+      "year": "2025",
+      "image": "",
+      "title": "SIPADU",
+      "status": "Live",
+      "category": "Sistem Informasi",
+      "featured": true,
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z",
+      "description": "Sistem informasi pelayanan administrasi desa untuk pengajuan surat, pelacakan status, dan pengarsipan dokumen warga."
+    },
+    {
+      "id": "24d73a97-f27d-42d0-9804-42bd22ba4360",
+      "link": "",
+      "repo": "",
+      "tech": [
+        "Laravel",
+        "MySQL",
+        "Tailwind"
+      ],
+      "year": "2025",
+      "image": "",
+      "title": "RuangBaca",
+      "status": "Live",
+      "category": "Web App",
+      "featured": false,
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z",
+      "description": "Katalog perpustakaan digital dengan pencarian cepat, manajemen koleksi, dan rekomendasi bacaan sederhana."
+    },
+    {
+      "id": "b5e14f14-9264-4f91-90ca-30dbf7d3828f",
+      "link": "",
+      "repo": "",
+      "tech": [
+        "React",
+        "Chart.js",
+        "Supabase"
+      ],
+      "year": "2024",
+      "image": "",
+      "title": "NilaiKu",
+      "status": "Beta",
+      "category": "Dashboard",
+      "featured": false,
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z",
+      "description": "Dashboard akademik untuk memantau nilai, IPK, dan target studi dengan visualisasi data yang mudah dibaca."
+    },
+    {
+      "id": "ac9d0ba3-5078-4390-9ffb-f67f49603bd2",
+      "link": "",
+      "repo": "",
+      "tech": [
+        "Next.js",
+        "Prisma",
+        "PostgreSQL"
+      ],
+      "year": "2024",
+      "image": "",
+      "title": "PresensiQR",
+      "status": "Prototype",
+      "category": "Prototype",
+      "featured": false,
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z",
+      "description": "Prototipe presensi berbasis QR untuk kelas kecil, dilengkapi rekap kehadiran dan ekspor data."
+    }
+  ],
+  "certificates": [
+    {
+      "id": "383266fb-4a88-4744-b82a-72658592e43b",
+      "date": "2025",
+      "link": "",
+      "image": "",
+      "title": "Front-End Web Development",
+      "issuer": "Dicoding Academy",
+      "skills": [
+        "React",
+        "Responsive Design",
+        "Web Fundamentals"
+      ],
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z",
+      "credentialId": "DCD-FE-2025-001"
+    },
+    {
+      "id": "0e0cff5a-cac2-4899-8c71-181890413c46",
+      "date": "2024",
+      "link": "",
+      "image": "",
+      "title": "Junior Web Developer",
+      "issuer": "BNSP",
+      "skills": [
+        "Web Development",
+        "Software Testing"
+      ],
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z",
+      "credentialId": "BNSP-JWD-2024-118"
+    },
+    {
+      "id": "ab9238b8-8e4d-42fc-b830-ad9c1002a8f5",
+      "date": "2024",
+      "link": "",
+      "image": "",
+      "title": "Data Analytics Fundamentals",
+      "issuer": "Coursera",
+      "skills": [
+        "Data Analysis",
+        "Visualization",
+        "SQL"
+      ],
+      "createdAt": "2026-11-25T13:31:15.514Z",
+      "published": true,
+      "updatedAt": "2026-11-25T13:31:15.514Z",
+      "credentialId": "CRS-DA-2024-882"
+    }
+  ]
+}
