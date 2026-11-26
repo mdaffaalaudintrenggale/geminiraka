@@ -15,6 +15,16 @@ import {
 } from 'lucide-react';
 import { AdminPageHeader, Field, ImageField, Toggle } from './ui';
 import { initials } from '../../lib/utils';
+import {
+  BODY_FONTS,
+  DISPLAY_FONTS,
+  MONO_FONTS,
+  TONES,
+  fontStack,
+  loadFontFaces,
+  normalizeFonts,
+  tonePreview,
+} from '../../lib/fonts';
 
 const PRESETS = [
   { name: 'Acid Lime', accent: '#c8ff5e', accent2: '#5ce1c3' },
@@ -32,8 +42,20 @@ export default function AppearanceManager({ settings, onSave }) {
     setForm(settings);
   }, [settings]);
 
+  useEffect(() => {
+    loadFontFaces(form);
+  }, [form.fontBody, form.fontDisplay, form.fontMono]);
+
+  const mode = form.mode === 'light' ? 'light' : 'dark';
+  const fonts = normalizeFonts(form);
+  const tone = tonePreview(form);
+
   const set = (key) => (event) => {
     setForm((current) => ({ ...current, [key]: event.target.value }));
+  };
+
+  const changeMode = (nextMode) => {
+    setForm((current) => ({ ...current, mode: nextMode, tone: 'default' }));
   };
 
   const submit = async (event) => {
@@ -47,7 +69,17 @@ export default function AppearanceManager({ settings, onSave }) {
   };
 
   const resetTheme = () => {
-    setForm((current) => ({ ...current, accent: '#c8ff5e', accent2: '#5ce1c3', mode: 'dark', showGrid: true }));
+    setForm((current) => ({
+      ...current,
+      accent: '#c8ff5e',
+      accent2: '#5ce1c3',
+      mode: 'dark',
+      tone: 'default',
+      fontBody: 'space-grotesk',
+      fontDisplay: 'instrument-serif',
+      fontMono: 'jetbrains-mono',
+      showGrid: true,
+    }));
   };
 
   return (
@@ -148,6 +180,30 @@ export default function AppearanceManager({ settings, onSave }) {
                 </Field>
               </div>
 
+              <div className="admin-tone-block">
+                <span className="admin-field__label">Warna latar ({mode === 'light' ? 'terang' : 'gelap'})</span>
+                <div className="admin-tone-grid">
+                  {TONES[mode].map((option) => {
+                    const active = tone.id === option.id;
+                    return (
+                      <button
+                        type="button"
+                        key={option.id}
+                        className={`admin-tone ${active ? 'is-active' : ''}`}
+                        onClick={() => setForm((current) => ({ ...current, tone: option.id }))}
+                      >
+                        <span className="admin-tone__chip" style={{ background: option.bg }}>
+                          <i style={{ background: option.panel }} />
+                          <i style={{ background: option.text }} />
+                        </span>
+                        <span>{option.label}</span>
+                        {active ? <Check size={13} /> : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="admin-theme-row">
                 <div>
                   <span className="admin-field__label">Mode tampilan</span>
@@ -155,14 +211,14 @@ export default function AppearanceManager({ settings, onSave }) {
                     <button
                       type="button"
                       className={form.mode !== 'light' ? 'is-active' : ''}
-                      onClick={() => setForm((current) => ({ ...current, mode: 'dark' }))}
+                      onClick={() => changeMode('dark')}
                     >
                       <Moon size={14} /> Dark
                     </button>
                     <button
                       type="button"
                       className={form.mode === 'light' ? 'is-active' : ''}
-                      onClick={() => setForm((current) => ({ ...current, mode: 'light' }))}
+                      onClick={() => changeMode('light')}
                     >
                       <Sun size={14} /> Light
                     </button>
@@ -184,7 +240,59 @@ export default function AppearanceManager({ settings, onSave }) {
 
           <section className="admin-card">
             <header className="admin-card__head">
-              <span className="admin-eyebrow">03 / CONTACT SECTION</span>
+              <span className="admin-eyebrow">03 / TYPOGRAPHY</span>
+              <h2>Tipografi</h2>
+              <p>Pilih rupa huruf untuk teks isi, judul besar, dan label teknis. Setiap pilihan dimuat otomatis dari Google Fonts.</p>
+            </header>
+            <div className="admin-card__body">
+              <div className="admin-form-grid admin-form-grid--3">
+                <Field label="Font isi" hint="Paragraf, navigasi, dan tombol.">
+                  <select className="admin-input admin-select" value={fonts.body} onChange={set('fontBody')}>
+                    {BODY_FONTS.map((font) => (
+                      <option key={font.id} value={font.id}>{font.label}</option>
+                    ))}
+                  </select>
+                </Field>
+                <Field label="Font display" hint="Nama besar dan aksen judul.">
+                  <select className="admin-input admin-select" value={fonts.display} onChange={set('fontDisplay')}>
+                    {DISPLAY_FONTS.map((font) => (
+                      <option key={font.id} value={font.id}>{font.label}</option>
+                    ))}
+                  </select>
+                </Field>
+                <Field label="Font mono" hint="Label teknis, kode, dan metadata.">
+                  <select className="admin-input admin-select" value={fonts.mono} onChange={set('fontMono')}>
+                    {MONO_FONTS.map((font) => (
+                      <option key={font.id} value={font.id}>{font.label}</option>
+                    ))}
+                  </select>
+                </Field>
+              </div>
+
+              <div
+                className="admin-type-specimen"
+                style={{ fontFamily: fontStack(BODY_FONTS, fonts.body) }}
+              >
+                <span
+                  className="admin-type-specimen__tag"
+                  style={{ fontFamily: fontStack(MONO_FONTS, fonts.mono) }}
+                >
+                  SPECIMEN / 03 — {fontStack(BODY_FONTS, fonts.body).split(',')[0].replace(/'/g, '')}
+                </span>
+                <strong style={{ fontFamily: fontStack(DISPLAY_FONTS, fonts.display) }}>
+                  Sistem informasi yang rapi &amp; manusiawi
+                </strong>
+                <p>
+                  Tipografi menentukan irama bacaan. Gunakan font isi yang netral, display untuk
+                  penekanan, dan mono untuk detail teknis seperti kode, label, serta metadata.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="admin-card">
+            <header className="admin-card__head">
+              <span className="admin-eyebrow">04 / CONTACT SECTION</span>
               <h2>Konten bagian kontak</h2>
               <p>Ajakan dan penjelasan yang tampil di section kontak sebelum formulir pesan.</p>
             </header>
@@ -205,13 +313,19 @@ export default function AppearanceManager({ settings, onSave }) {
           <div className="appearance-preview-wrap">
             <div className="appearance-preview-head">
               <span><Monitor size={14} /> LIVE PREVIEW</span>
-              <span>{form.mode === 'light' ? 'LIGHT' : 'DARK'}</span>
+              <span>{mode === 'light' ? 'LIGHT' : 'DARK'} · {tone.label.toUpperCase()}</span>
             </div>
             <div
-              className={`appearance-preview appearance-preview--${form.mode === 'light' ? 'light' : 'dark'}`}
+              className={`appearance-preview appearance-preview--${mode}`}
               style={{
                 '--preview-accent': form.accent || '#c8ff5e',
                 '--preview-accent-2': form.accent2 || '#5ce1c3',
+                '--preview-bg': tone.bg,
+                '--preview-panel': tone.panel,
+                '--preview-text': tone.text,
+                '--preview-font-body': fontStack(BODY_FONTS, fonts.body),
+                '--preview-font-display': fontStack(DISPLAY_FONTS, fonts.display),
+                '--preview-font-mono': fontStack(MONO_FONTS, fonts.mono),
               }}
             >
               <div className="appearance-preview__grid" />
@@ -226,6 +340,7 @@ export default function AppearanceManager({ settings, onSave }) {
               <div className="appearance-preview__body">
                 <div className="appearance-preview__copy">
                   <span className="appearance-preview__eyebrow">PERSONAL INFORMATION SYSTEM</span>
+
                   <strong>{form.fullName || 'Nama Anda'}<em>.</em></strong>
                   <span className="appearance-preview__role">{form.role || 'Peran Anda'}</span>
                   <p>{form.headline || 'Headline Anda akan tampil di sini.'}</p>

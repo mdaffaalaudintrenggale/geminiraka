@@ -13,6 +13,7 @@ import Footer from './Footer';
 import BrandMark from '../common/BrandMark';
 import { api } from '../../lib/api';
 import { applyTheme, initials } from '../../lib/utils';
+import { applyTypography } from '../../lib/fonts';
 import {
   destroySmoothScroll,
   gsap,
@@ -91,6 +92,7 @@ export default function PublicSite() {
       .then((payload) => {
         setData(payload);
         applyTheme(payload.settings);
+        applyTypography(payload.settings);
       })
       .catch((requestError) => {
         if (requestError.name === 'AbortError') return;
@@ -103,6 +105,7 @@ export default function PublicSite() {
     if (!data?.settings) return;
     document.title = `${data.settings.fullName} — ${data.settings.role}`;
     applyTheme(data.settings);
+    applyTypography(data.settings);
   }, [data]);
 
   useEffect(() => {

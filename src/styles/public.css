@@ -650,7 +650,7 @@ main,
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: #080b0e;
+  background: var(--bg-2);
 }
 
 .profile-photo {
@@ -1804,7 +1804,7 @@ main,
   aspect-ratio: 16 / 8.6;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  background: #090d10;
+  background: var(--bg-2);
 }
 
 .app-visual img {

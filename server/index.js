@@ -119,6 +119,34 @@ const SETTING_STRINGS = {
   contactText: 1000,
 };
 
+const FONT_CHOICES = {
+  fontBody: [
+    'space-grotesk',
+    'inter',
+    'plus-jakarta',
+    'manrope',
+    'sora',
+    'dm-sans',
+    'ibm-plex-sans',
+    'system-sans',
+  ],
+  fontDisplay: [
+    'instrument-serif',
+    'playfair',
+    'fraunces',
+    'cormorant',
+    'dm-serif',
+    'lora',
+    'georgia',
+  ],
+  fontMono: ['jetbrains-mono', 'ibm-plex-mono', 'space-mono', 'fira-code', 'system-mono'],
+};
+
+const TONE_CHOICES = {
+  dark: ['default', 'graphite', 'navy', 'forest'],
+  light: ['default', 'mist', 'sand'],
+};
+
 function cleanSettings(input = {}, base = {}) {
   const next = { ...base };
   for (const [key, max] of Object.entries(SETTING_STRINGS)) {
@@ -137,6 +165,12 @@ function cleanSettings(input = {}, base = {}) {
   next.accent = /^#[0-9a-f]{6}$/i.test(accent) ? accent : base.accent || '#c8ff5e';
   next.accent2 = /^#[0-9a-f]{6}$/i.test(accent2) ? accent2 : base.accent2 || '#5ce1c3';
   next.mode = ['dark', 'light'].includes(input.mode) ? input.mode : base.mode || 'dark';
+  for (const [key, allowed] of Object.entries(FONT_CHOICES)) {
+    const value = str(input[key] ?? base[key], 40);
+    next[key] = allowed.includes(value) ? value : base[key] || allowed[0];
+  }
+  const tone = str(input.tone ?? base.tone, 24);
+  next.tone = TONE_CHOICES[next.mode].includes(tone) ? tone : 'default';
   next.showGrid = bool(input.showGrid, base.showGrid ?? true);
   return next;
 }

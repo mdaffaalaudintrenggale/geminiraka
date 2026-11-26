@@ -11,7 +11,8 @@ Website profil pribadi bergaya *information system / control room*: menampilkan 
 - Galeri aplikasi dengan status (Live / Beta / Prototype / Archived), teknologi, tautan demo & repo.
 - Sertifikat dengan modal detail, penerbit, kredensial, dan skill.
 - Formulir kontak yang masuk ke kotak pesan admin.
-- Mode terang/gelap, warna aksen, grid background, dan logo kustom.
+- Mode terang/gelap, palet latar (midnight, graphite, navy, forest, mist, sand), warna aksen, grid background, dan logo kustom.
+- Tipografi kustom: pilihan font isi, display, dan mono yang dimuat otomatis dari Google Fonts.
 - Animasi halus: **GSAP ScrollTrigger**, **Motion**, dan **Lenis** smooth scroll.
 - Responsif untuk desktop, tablet, dan ponsel.
 
@@ -19,7 +20,7 @@ Website profil pribadi bergaya *information system / control room*: menampilkan 
 - Login aman (bcrypt + JWT 12 jam + pembatasan percobaan login).
 - Ringkasan statistik konten dan pesan belum dibaca.
 - Identitas & profil: nama, peran, headline, narasi, bio, kontak, fokus, sosial, statistik.
-- Tampilan & branding: logo, foto profil, nama situs, warna aksen, mode, grid, catatan footer, teks kontak, plus pratinjau langsung.
+- Tampilan & branding: logo, foto profil, nama situs, warna aksen, palette latar, mode, grid, font isi/display/mono, catatan footer, teks kontak, plus pratinjau langsung.
 - CRUD karya tulis, aplikasi, dan sertifikat (termasuk unggulan, status publikasi, cover/gambar).
 - Kotak masuk pesan: tandai dibaca, balas lewat email, hapus.
 - Akun superadmin: ubah username dan password.
@@ -83,7 +84,7 @@ npm run reset:admin -- superadmin passwordBaruMinimal8
 
 1. Buka `/admin` lalu masuk.
 2. **Identitas & profil** — nama, peran, headline, tagline, bio, kontak, fokus, sosial, dan statistik.
-3. **Tampilan & branding** — unggah logo/foto, pilih aksen & mode, atur grid, nama situs, catatan footer. Klik **Pratinjau** untuk melihat hasil, lalu **Simpan**.
+3. **Tampilan & branding** — unggah logo/foto, pilih aksen, palet latar, mode, dan font isi/display/mono, atur grid, nama situs, catatan footer. Pratinjau langsung memperlihatkan kombinasi warna dan tipografi. Klik **Simpan** untuk menerapkan.
 4. **Karya & tulisan** — tambah artikel/jurnal/karya tulis, isi konten Markdown, tag, cover, dan tautan. Gunakan ikon bintang untuk unggulan dan toggle untuk publikasi.
 5. **Aplikasi** — data aplikasi, teknologi, status, tautan demo/repo, dan gambar.
 6. **Sertifikat** — penerbit, tanggal, ID kredensial, skill, dan gambar.

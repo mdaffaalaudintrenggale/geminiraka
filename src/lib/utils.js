@@ -1,3 +1,5 @@
+import { normalizeTone, tonePreview } from './fonts';
+
 export function initials(name = '') {
   const parts = String(name)
     .trim()
@@ -30,8 +32,9 @@ export function applyTheme(settings = {}) {
   root.style.setProperty('--accent-2-ink', contrastInk(accent2));
   root.dataset.theme = settings.mode === 'light' ? 'light' : 'dark';
   root.dataset.grid = settings.showGrid === false ? 'off' : 'on';
+  root.dataset.tone = normalizeTone(settings);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', settings.mode === 'light' ? '#f2efe7' : '#06080a');
+  if (meta) meta.setAttribute('content', tonePreview(settings).bg);
 }
 
 export function formatDate(value, options = {}) {
