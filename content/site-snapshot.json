@@ -39,16 +39,16 @@
     "accent2": "#5ce1c3",
     "socials": [
       {
-        "label": "GitHub",
-        "url": "https://github.com/"
+        "url": "https://github.com/",
+        "label": "GitHub"
       },
       {
-        "label": "LinkedIn",
-        "url": "https://linkedin.com/"
+        "url": "https://linkedin.com/",
+        "label": "LinkedIn"
       },
       {
-        "label": "Instagram",
-        "url": "https://instagram.com/"
+        "url": "https://instagram.com/",
+        "label": "Instagram"
       }
     ],
     "tagline": "Saya bergerak di persimpangan desain, data, dan pengembangan web — merancang sistem informasi yang tidak hanya berjalan, tetapi juga nyaman digunakan.",
