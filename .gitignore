@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Database runtime (berisi hash password & JWT secret)
+data/database.json
+data/database.json.tmp
+
+# Uploads pengguna (foto, logo, cover)
+uploads/*
+!uploads/.gitkeep
+
+# Visual QA sementara
+shot-*.png
+visual-check.mjs
+
+# OS & editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
