@@ -52,20 +52,50 @@ function contentsUrl(repo, filePath) {
   return `${API}/repos/${repo}/contents/${encoded}`;
 }
 
+function publicItems(items = []) {
+  return items
+    .filter((item) => item.published)
+    .slice()
+    .sort((a, b) => {
+      if (Boolean(b.featured) !== Boolean(a.featured)) return Number(b.featured) - Number(a.featured);
+      const year = String(b.year || b.date || '').localeCompare(String(a.year || a.date || ''));
+      if (year) return year;
+      const created = String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+      if (created) return created;
+      return String(a.id || '').localeCompare(String(b.id || ''));
+    });
+}
+
 function buildSnapshot(db) {
   return {
     generatedAt: db.meta?.updatedAt || new Date().toISOString(),
     version: 1,
     settings: db.settings,
-    works: db.works.filter((item) => item.published),
-    apps: db.apps.filter((item) => item.published),
-    certificates: db.certificates.filter((item) => item.published),
+    works: publicItems(db.works),
+    apps: publicItems(db.apps),
+    certificates: publicItems(db.certificates),
   };
+}
+
+function canonical(value) {
+  if (Array.isArray(value)) return value.map(canonical);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .map((key) => [key, canonical(value[key])]),
+    );
+  }
+  return value;
 }
 
 function withoutTimestamp(value = {}) {
   const { generatedAt, ...rest } = value;
-  return rest;
+  return canonical(rest);
+}
+
+function serialize(value) {
+  return `${JSON.stringify(canonical(value), null, 2)}\n`;
 }
 
 function sameContent(existingText, snapshot) {
@@ -108,7 +138,7 @@ async function uploadOnce(snapshot) {
   const counts = `${snapshot.works.length} karya, ${snapshot.apps.length} aplikasi, ${snapshot.certificates.length} sertifikat`;
   const body = {
     message: `chore: sinkron konten CMS (${counts})`,
-    content: Buffer.from(`${JSON.stringify(snapshot, null, 2)}\n`, 'utf8').toString('base64'),
+    content: Buffer.from(serialize(snapshot), 'utf8').toString('base64'),
     branch,
     ...(sha ? { sha } : {}),
   };
