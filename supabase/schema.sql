@@ -54,6 +54,12 @@ alter table apps enable row level security;
 alter table certificates enable row level security;
 alter table messages enable row level security;
 
+-- Izin dasar untuk Data API (publishable/anon key).
+-- Tanpa grant ini, RLS policy saja tidak cukup dan REST akan menghasilkan 401.
+grant usage on schema public to anon, authenticated;
+grant select on site_settings, works, apps, certificates to anon, authenticated;
+revoke all on app_meta, admin_account, messages from anon, authenticated;
+
 drop policy if exists "public read site settings" on site_settings;
 create policy "public read site settings"
   on site_settings for select
