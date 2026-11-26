@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T08:24:02.320Z",
+  "generatedAt": "2026-11-26T11:54:22.451Z",
   "version": 1,
   "settings": {
     "bio": "Saya adalah mahasiswa Sistem Informasi yang percaya bahwa teknologi terbaik lahir dari pemahaman terhadap manusia. Fokus saya adalah membangun produk digital yang terstruktur, aksesibel, dan punya detail yang terasa. Selain menulis kode, saya aktif menuangkan gagasan lewat artikel, jurnal, dan karya tulis.",
@@ -7,7 +7,7 @@
     "mode": "dark",
     "name": "Geminiraka",
     "role": "Information Systems Student",
-    "tone": "graphite",
+    "tone": "default",
     "email": "hello@daffa.dev",
     "focus": [
       "Web Development",
@@ -39,20 +39,20 @@
     "accent2": "#5ce1c3",
     "socials": [
       {
-        "url": "https://github.com/",
-        "label": "GitHub"
+        "label": "GitHub",
+        "url": "https://github.com/"
       },
       {
-        "url": "https://linkedin.com/",
-        "label": "LinkedIn"
+        "label": "LinkedIn",
+        "url": "https://linkedin.com/"
       },
       {
-        "url": "https://instagram.com/",
-        "label": "Instagram"
+        "label": "Instagram",
+        "url": "https://instagram.com/"
       }
     ],
     "tagline": "Saya bergerak di persimpangan desain, data, dan pengembangan web — merancang sistem informasi yang tidak hanya berjalan, tetapi juga nyaman digunakan.",
-    "fontBody": "inter",
+    "fontBody": "space-grotesk",
     "fontMono": "jetbrains-mono",
     "fullName": "Daffa Pratama",
     "headline": "Membangun sistem digital yang rapi, cepat, dan terasa manusiawi.",
