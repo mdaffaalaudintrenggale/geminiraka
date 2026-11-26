@@ -49,6 +49,7 @@ export const api = {
   login: (username, password) => request('/api/auth/login', { method: 'POST', body: { username, password } }),
   me: () => request('/api/auth/me', { auth: true }),
   bootstrap: () => request('/api/admin/bootstrap', { auth: true }),
+  githubSync: () => request('/api/admin/github-sync', { auth: true }),
   updateSettings: (settings) => request('/api/admin/settings', { method: 'PUT', body: settings, auth: true }),
   create: (collection, item) => request(`/api/admin/${collection}`, { method: 'POST', body: item, auth: true }),
   update: (collection, id, item) => request(`/api/admin/${collection}/${id}`, { method: 'PUT', body: item, auth: true }),

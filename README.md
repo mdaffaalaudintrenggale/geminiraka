@@ -160,12 +160,39 @@ Tabel yang dibuat: `app_meta`, `admin_account`, `site_settings`, `works`, `apps`
 | `SUPABASE_URL` | — | URL project Supabase (untuk referensi/client) |
 | `SUPABASE_PUBLISHABLE_KEY` | — | Publishable key untuk akses baca dari client |
 | `PG_POOL_MAX` | `5` | Jumlah maksimum koneksi PostgreSQL |
+| `GITHUB_SYNC_TOKEN` | kosong | Fine-grained token dengan akses Contents: Read and write |
+| `GITHUB_REPO` | kosong | Repo tujuan sinkron, mis. `user/repo` |
+| `GITHUB_BRANCH` | `main` | Branch tujuan |
+| `GITHUB_CONTENT_PATH` | `content/site-snapshot.json` | Lokasi snapshot konten di repo |
+| `GITHUB_SYNC_DELAY` | `1200` | Jeda (ms) sebelum commit setelah perubahan |
 
 Membuat nilai acak:
 
 ```powershell
 node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 ```
+
+## Sinkron konten ke GitHub
+
+Setiap perubahan yang disimpan dari panel admin (tampilan, karya, aplikasi, sertifikat) otomatis di-commit ke repository GitHub sebagai snapshot JSON. Tidak perlu push manual untuk perubahan konten.
+
+1. Buat **fine-grained personal access token** di https://github.com/settings/personal-access-tokens/new
+   - Repository access: pilih repo `geminiraka`.
+   - Permissions → Repository permissions → **Contents: Read and write**.
+2. Isi `.env`:
+
+   ```env
+   GITHUB_SYNC_TOKEN=github_pat_...
+   GITHUB_REPO=mdaffaalaudintrenggale/geminiraka
+   GITHUB_BRANCH=main
+   GITHUB_CONTENT_PATH=content/site-snapshot.json
+   ```
+
+3. Restart server. Status sinkron tampil di tab **Tampilan & branding**.
+
+Snapshot hanya memuat data publik: pengaturan situs, karya/aplikasi/sertifikat yang **published**. Akun, hash password, pesan kontak, dan JWT secret tidak pernah ikut. Gambar di `uploads/` juga tidak ikut karena file biner tetap berada di server/Supabase Storage.
+
+> Sinkron ini hanya mencerminkan konten ke repo GitHub, bukan hosting. Untuk website live, gunakan hosting Node.js (Render/Railway/VPS) dengan `DATABASE_URL` dan variabel GitHub yang sama.
 
 ## Data, upload, dan backup
 

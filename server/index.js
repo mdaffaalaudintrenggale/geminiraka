@@ -16,10 +16,16 @@ import {
   usingPostgres,
   slugify,
 } from './db.js';
+import { scheduleGithubSync, githubSyncStatus } from './github-sync.js';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 const HOST = process.env.HOST || '0.0.0.0';
+
+async function commitChanges() {
+  await saveDB();
+  scheduleGithubSync(getDB());
+}
 
 try {
   await initDB();
@@ -331,7 +337,7 @@ app.post('/api/contact', async (req, res) => {
     read: false,
     createdAt: now,
   });
-  await saveDB();
+  await commitChanges();
   res.status(201).json({ ok: true, message: 'Pesan berhasil dikirim.' });
 });
 
@@ -375,10 +381,14 @@ app.get('/api/admin/bootstrap', auth, (req, res) => {
   });
 });
 
+app.get('/api/admin/github-sync', auth, (req, res) => {
+  res.json(githubSyncStatus());
+});
+
 app.put('/api/admin/settings', auth, async (req, res) => {
   const db = getDB();
   db.settings = cleanSettings(req.body, db.settings);
-  await saveDB();
+  await commitChanges();
   res.json({ ok: true, settings: db.settings, updatedAt: db.meta.updatedAt });
 });
 
@@ -397,7 +407,7 @@ function registerCollection(route, collection, sanitizer) {
       updatedAt: now,
     };
     db[collection].push(item);
-    await saveDB();
+    await commitChanges();
     res.status(201).json({ ok: true, item });
   });
 
@@ -413,7 +423,7 @@ function registerCollection(route, collection, sanitizer) {
       updatedAt: new Date().toISOString(),
     };
     db[collection][index] = item;
-    await saveDB();
+    await commitChanges();
     res.json({ ok: true, item });
   });
 
@@ -422,7 +432,7 @@ function registerCollection(route, collection, sanitizer) {
     const index = db[collection].findIndex((entry) => entry.id === req.params.id);
     if (index === -1) throw httpError(404, 'Data tidak ditemukan.');
     const [removed] = db[collection].splice(index, 1);
-    await saveDB();
+    await commitChanges();
     res.json({ ok: true, removed: removed.id });
   });
 }
@@ -436,7 +446,7 @@ app.patch('/api/admin/messages/:id', auth, async (req, res) => {
   const message = db.messages.find((item) => item.id === req.params.id);
   if (!message) throw httpError(404, 'Pesan tidak ditemukan.');
   message.read = bool(req.body?.read, true);
-  await saveDB();
+  await commitChanges();
   res.json({ ok: true, message });
 });
 
@@ -445,7 +455,7 @@ app.delete('/api/admin/messages/:id', auth, async (req, res) => {
   const index = db.messages.findIndex((item) => item.id === req.params.id);
   if (index === -1) throw httpError(404, 'Pesan tidak ditemukan.');
   db.messages.splice(index, 1);
-  await saveDB();
+  await commitChanges();
   res.json({ ok: true });
 });
 
@@ -468,7 +478,7 @@ app.put('/api/admin/account', auth, async (req, res) => {
     db.account.passwordHash = bcrypt.hashSync(newPassword, 12);
   }
   db.account.updatedAt = new Date().toISOString();
-  await saveDB();
+  await commitChanges();
   res.json({ ok: true, account: { username: db.account.username, updatedAt: db.account.updatedAt } });
 });
 
@@ -548,6 +558,7 @@ const server = app.listen(PORT, HOST, () => {
   console.log(`  Database    →  ${usingPostgres ? 'PostgreSQL / Supabase' : 'JSON lokal (data/database.json)'}`);
   console.log(`  API & site  →  http://localhost:${PORT}`);
   console.log(`  Admin       →  http://localhost:${PORT}/admin\n`);
+  scheduleGithubSync(getDB());
 });
 
 async function shutdown() {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   Check,
   Eye,
+  GitBranch,
   Image as ImageIcon,
   Loader2,
   Monitor,
@@ -15,6 +16,7 @@ import {
 } from 'lucide-react';
 import { AdminPageHeader, Field, ImageField, Toggle } from './ui';
 import { initials } from '../../lib/utils';
+import { api } from '../../lib/api';
 import {
   BODY_FONTS,
   DISPLAY_FONTS,
@@ -37,10 +39,23 @@ const PRESETS = [
 export default function AppearanceManager({ settings, onSave }) {
   const [form, setForm] = useState(settings);
   const [saving, setSaving] = useState(false);
+  const [sync, setSync] = useState(null);
+
+  const refreshSync = async () => {
+    try {
+      setSync(await api.githubSync());
+    } catch {
+      setSync(null);
+    }
+  };
 
   useEffect(() => {
     setForm(settings);
   }, [settings]);
+
+  useEffect(() => {
+    refreshSync();
+  }, []);
 
   useEffect(() => {
     loadFontFaces(form);
@@ -49,6 +64,9 @@ export default function AppearanceManager({ settings, onSave }) {
   const mode = form.mode === 'light' ? 'light' : 'dark';
   const fonts = normalizeFonts(form);
   const tone = tonePreview(form);
+  const syncTime = sync?.lastSync
+    ? new Date(sync.lastSync).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
+    : '';
 
   const set = (key) => (event) => {
     setForm((current) => ({ ...current, [key]: event.target.value }));
@@ -63,6 +81,7 @@ export default function AppearanceManager({ settings, onSave }) {
     setSaving(true);
     try {
       await onSave(form);
+      await refreshSync();
     } finally {
       setSaving(false);
     }
@@ -356,6 +375,22 @@ export default function AppearanceManager({ settings, onSave }) {
                 <span><b>08</b><i>KARYA</i></span>
                 <span><b>06</b><i>SERTIFIKAT</i></span>
               </div>
+            </div>
+          </div>
+
+          <div className={`admin-note-card ${sync?.enabled ? 'admin-note-card--accent' : 'admin-note-card--muted'}`}>
+            <GitBranch size={17} />
+            <div>
+              <strong>{sync?.enabled ? 'Sinkron GitHub aktif' : 'Sinkron GitHub nonaktif'}</strong>
+              {sync?.enabled ? (
+                <p>
+                  Konten publik otomatis di-commit ke <code>{sync.repo}</code> ({sync.branch}).
+                  {sync.lastSync ? ` Terakhir: ${syncTime}.` : ' Menunggu perubahan pertama.'}
+                </p>
+              ) : (
+                <p>Isi <code>GITHUB_SYNC_TOKEN</code> dan <code>GITHUB_REPO</code> di <code>.env</code>, lalu restart server.</p>
+              )}
+              {sync?.lastError ? <p className="admin-note-card__error">{sync.lastError}</p> : null}
             </div>
           </div>
 

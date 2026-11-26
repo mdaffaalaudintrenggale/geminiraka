@@ -1199,6 +1199,11 @@ select.admin-input {
   opacity: 0.8;
 }
 
+.admin-note-card__error {
+  color: var(--danger) !important;
+  word-break: break-word;
+}
+
 /* ---------- Repeater ---------- */
 
 .admin-repeater {
