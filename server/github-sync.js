@@ -196,6 +196,13 @@ async function flush(db) {
   }
 }
 
+export async function syncGithubNow(db) {
+  const { token, repo } = config();
+  if (!token || !repo) return false;
+  await upload(buildSnapshot(db));
+  return true;
+}
+
 export function scheduleGithubSync(db) {
   const { token, repo, delay } = config();
   if (!token || !repo) {

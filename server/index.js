@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import {
   ROOT,
-  UPLOAD_DIR,
+  UPLOAD_DIR as LOCAL_UPLOAD_DIR,
   getDB,
   saveDB,
   initDB,
@@ -16,15 +16,23 @@ import {
   usingPostgres,
   slugify,
 } from './db.js';
-import { scheduleGithubSync, githubSyncStatus } from './github-sync.js';
+import { scheduleGithubSync, syncGithubNow, githubSyncStatus } from './github-sync.js';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 const HOST = process.env.HOST || '0.0.0.0';
+const IS_VERCEL = Boolean(process.env.VERCEL);
+const UPLOAD_DIR = IS_VERCEL ? path.join('/tmp', 'daffa-uploads') : LOCAL_UPLOAD_DIR;
 
 async function commitChanges() {
   await saveDB();
-  scheduleGithubSync(getDB());
+  if (IS_VERCEL) {
+    await syncGithubNow(getDB()).catch((error) => {
+      console.error('[github-sync]', error.message);
+    });
+  } else {
+    scheduleGithubSync(getDB());
+  }
 }
 
 try {
@@ -32,6 +40,7 @@ try {
 } catch (error) {
   console.error('\n[db] Gagal menyiapkan database:', error.message);
   console.error('     Periksa DATABASE_URL / schema.sql lalu coba lagi.\n');
+  if (IS_VERCEL) throw error;
   process.exit(1);
 }
 
@@ -46,7 +55,11 @@ app.use((req, res, next) => {
   next();
 });
 
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+try {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+} catch (error) {
+  console.error('[upload] Folder upload tidak dapat dibuat:', error.message);
+}
 
 function httpError(status, message) {
   const error = new Error(message);
@@ -553,18 +566,22 @@ app.use((error, req, res, next) => {
   return res.status(status).json({ error: error.message || 'Terjadi kesalahan pada server.' });
 });
 
-const server = app.listen(PORT, HOST, () => {
-  console.log(`\n  Daffa Profile System`);
-  console.log(`  Database    →  ${usingPostgres ? 'PostgreSQL / Supabase' : 'JSON lokal (data/database.json)'}`);
-  console.log(`  API & site  →  http://localhost:${PORT}`);
-  console.log(`  Admin       →  http://localhost:${PORT}/admin\n`);
-  scheduleGithubSync(getDB());
-});
+export default app;
 
-async function shutdown() {
-  await closeDB().catch(() => {});
-  process.exit(0);
+if (!IS_VERCEL) {
+  const server = app.listen(PORT, HOST, () => {
+    console.log(`\n  Daffa Profile System`);
+    console.log(`  Database    →  ${usingPostgres ? 'PostgreSQL / Supabase' : 'JSON lokal (data/database.json)'}`);
+    console.log(`  API & site  →  http://localhost:${PORT}`);
+    console.log(`  Admin       →  http://localhost:${PORT}/admin\n`);
+    scheduleGithubSync(getDB());
+  });
+
+  const shutdown = async () => {
+    await closeDB().catch(() => {});
+    server.close(() => process.exit(0));
+  };
+
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 }
-
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);

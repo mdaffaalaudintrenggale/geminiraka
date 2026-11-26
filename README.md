@@ -65,6 +65,42 @@ npm start
 
 Setelah build, seluruh website dan API disajikan oleh Express di <http://localhost:4000> (admin: `/admin`). Jalankan ulang `npm run build` setiap kali kode diubah.
 
+### Deploy ke Vercel
+
+Repo sudah menyertakan `vercel.json` dan fungsi serverless `api/[...path].js`. Vercel akan:
+
+1. Menjalankan `npm run build` dan menyajikan folder `dist` sebagai situs statis.
+2. Menjalankan Express sebagai serverless function untuk semua rute `/api/*`.
+3. Mengarahkan `/admin` ke `index.html`.
+
+Langkah deploy:
+
+1. Import repo di Vercel, framework terdeteksi **Vite**.
+2. Tambahkan **Environment Variables** berikut di Project Settings → Environment Variables:
+
+   | Variabel | Wajib | Nilai |
+   | --- | --- | --- |
+   | `DATABASE_URL` | ya | Connection string Supabase (lihat catatan pooler di bawah) |
+   | `JWT_SECRET` | ya | String acak panjang |
+   | `GITHUB_SYNC_TOKEN` | opsional | Token sinkron konten |
+   | `GITHUB_REPO` | opsional | `mdaffaalaudintrenggale/geminiraka` |
+   | `GITHUB_BRANCH` | opsional | `main` |
+   | `SUPABASE_URL` | opsional | URL project Supabase |
+   | `SUPABASE_PUBLISHABLE_KEY` | opsional | Publishable key |
+
+3. Deploy ulang (Redeploy) setelah menambah variabel.
+4. Cek `https://domain-anda/api/health` — harus mengembalikan `"database":"postgres"`.
+
+**Penting untuk serverless:** gunakan **Transaction Pooler** Supabase (port `6543`) agar koneksi tidak cepat habis, bukan Session Pooler (port `5432`). Contoh:
+
+```env
+DATABASE_URL=postgresql://postgres.PROJECT_REF:PASSWORD@aws-0-REGION.pooler.supabase.com:6543/postgres?pgbouncer=true
+```
+
+Jika `DATABASE_URL` kosong, fungsi Vercel tidak dapat menulis file JSON karena filesystem read-only, sehingga API akan gagal.
+
+**Batasan Vercel:** folder `uploads/` bersifat sementara (`/tmp`) dan hilang saat function di-restart. Untuk produksi, pindahkan gambar ke Supabase Storage atau layanan object storage lain. Sinkron GitHub tetap berjalan setiap kali menyimpan konten.
+
 ## Akun superadmin
 
 Kredensial awal:
@@ -124,13 +160,17 @@ Alternatif: buka **SQL Editor** di Supabase dan tempel isi `supabase/schema.sql`
 > **Publishable key** (`sb_publishable_...`) hanya untuk akses baca dari client. Membuat tabel (DDL) memerlukan connection string database atau Supabase access token.
 
 Tabel yang dibuat: `app_meta`, `admin_account`, `site_settings`, `works`, `apps`, `certificates`, `messages`. RLS hanya mengizinkan pembacaan publik untuk konten yang sudah dipublikasikan; data akun dan pesan tetap tertutup.
+
 ## Struktur proyek
 
 ```
 .
+├─ api/
+│  └─ [...path].js      # entry serverless Vercel untuk semua rute /api/*
 ├─ server/
-│  ├─ index.js          # API Express, auth, upload, serve frontend produksi
+│  ├─ index.js          # API Express, auth, upload, export app untuk Vercel
 │  ├─ db.js             # PostgreSQL/JSON, seed, baca/tulis data
+│  ├─ github-sync.js    # sinkron konten publik ke GitHub
 │  ├─ init-db.js        # buat skema dan isi data awal
 │  └─ reset-admin.js    # reset username/password superadmin
 ├─ src/
@@ -140,6 +180,8 @@ Tabel yang dibuat: `app_meta`, `admin_account`, `site_settings`, `works`, `apps`
 │  ├─ lib/              # API client, animasi, util
 │  └─ styles/           # public.css, admin.css, base.css
 ├─ supabase/schema.sql  # skema PostgreSQL + kebijakan RLS
+├─ vercel.json          # konfigurasi build, function, dan rewrite Vercel
+├─ content/             # snapshot konten publik (di-commit otomatis)
 ├─ data/database.json   # fallback JSON (dibuat otomatis, jangan di-commit)
 ├─ public/              # aset statis
 ├─ uploads/             # hasil upload gambar (jangan di-commit)
@@ -207,7 +249,8 @@ Snapshot hanya memuat data publik: pengaturan situs, karya/aplikasi/sertifikat y
 
 - Jalankan di balik reverse proxy (Nginx/Caddy) dengan HTTPS.
 - Ganti `JWT_SECRET` dan password superadmin sebelum online.
-- Gunakan **Session pooler** Supabase untuk koneksi `pg` dari server.
+- Server Node.js biasa: gunakan **Session pooler** Supabase (port `5432`).
+- Vercel/serverless: gunakan **Transaction pooler** Supabase (port `6543`, tambahkan `?pgbouncer=true`).
 - Aktifkan backup berkala untuk database dan `uploads/`.
 - Ukuran upload maksimal 6 MB per gambar.
 - Login dibatasi 8 percobaan per 10 menit per IP; formulir kontak 8 pesan per 10 menit per IP.
