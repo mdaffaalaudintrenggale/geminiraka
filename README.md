@@ -67,11 +67,13 @@ Setelah build, seluruh website dan API disajikan oleh Express di <http://localho
 
 ### Deploy ke Vercel
 
-Repo sudah menyertakan `vercel.json` dan fungsi serverless `api/[...path].js`. Vercel akan:
+Repo sudah menyertakan `vercel.json` dan fungsi serverless `api/index.js`. Vercel akan:
 
 1. Menjalankan `npm run build` dan menyajikan folder `dist` sebagai situs statis.
 2. Menjalankan Express sebagai serverless function untuk semua rute `/api/*`.
 3. Mengarahkan `/admin` ke `index.html`.
+
+Karena Vercel hanya mendukung satu segmen untuk file `api/[...slug].js`, `vercel.json` menulis ulang `/api/<path>` menjadi `/api?path=<path>`. `api/index.js` mengembalikan URL aslinya sebelum meneruskan request ke Express, sehingga rute bersarang seperti `/api/admin/works/:id` tetap bekerja.
 
 Langkah deploy:
 
@@ -166,7 +168,7 @@ Tabel yang dibuat: `app_meta`, `admin_account`, `site_settings`, `works`, `apps`
 ```
 .
 ├─ api/
-│  └─ [...path].js      # entry serverless Vercel untuk semua rute /api/*
+│  └─ index.js          # entry serverless Vercel untuk semua rute /api/*
 ├─ server/
 │  ├─ index.js          # API Express, auth, upload, export app untuk Vercel
 │  ├─ db.js             # PostgreSQL/JSON, seed, baca/tulis data
